@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
 
 AC_PREREQ([2.69])
 
@@ -20,8 +21,7 @@ AM_PROG_AR
 LT_INIT
 
 # Checks for programs.
-
-AX_CHECK_PROG([gcc])
+AC_PROG_CC[gcc clang]
 AX_CHECK_PROG([make])
 
 
