@@ -105,6 +105,11 @@ class LedctlCmd:
         ]).stdout
         return self.parse_slot_line(slot.cntrl_type, out)
 
+    def best_controller_by_device(self, dev_node):
+        self.run_ledctl_cmd([
+            "--best-controller", "--device", dev_node
+        ]).stdout
+
     def list_slots(self, controller_type):
         rc = []
         out = self.run_ledctl_cmd_valid(

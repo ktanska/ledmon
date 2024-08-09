@@ -118,16 +118,10 @@ def test_nvme_multipath_drives(ledctl_binary, slot_filters, controller_filters,
     if len(mp_drives) == 0:
         pytest.skip("No nvme multipath drives found")
 
-    slots_with_device_node = get_slots_with_device_or_skip(cmd, cntrl)
-    any_found = False
+    for mp_drive in mp_drives:
 
-    for slot in slots_with_device_node:
-        if slot.device_node not in mp_drives:
-            continue
-        any_found = True
-
-        LOGGER.debug(f"Found nvme multipath drive {slot}")
-
+        mp_cntrl = cmd.best_controller_by_device(mp_drive)
+        slot = get_slots_with_device_or_skip(cmd, mp_cntrl)
         for state in cmd.base_states:
             cmd.set_ibpi(slot.device_node, state)
             cur = cmd.get_slot_by_device(slot)
@@ -138,5 +132,3 @@ def test_nvme_multipath_drives(ledctl_binary, slot_filters, controller_filters,
 
         slot_set_and_get_by_device_all(cmd, slot)
 
-    if not any_found:
-        pytest.skip("Multipath drives are not connected to tested controller")
